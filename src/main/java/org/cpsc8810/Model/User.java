@@ -40,6 +40,14 @@ public class User {
         this.balance = balance;
     }
 
+    /**
+     * private key is strictly private, so signing with private key can only happen in the class and this function does the job
+     * @param prevTxnHash
+     * @return
+     * @throws NoSuchAlgorithmException
+     * @throws SignatureException
+     * @throws InvalidKeyException
+     */
     public byte[] signData(String prevTxnHash) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
         return digitalSignatureService.signData(prevTxnHash, this.privateKey);
     }

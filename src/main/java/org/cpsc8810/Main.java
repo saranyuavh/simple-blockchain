@@ -23,18 +23,27 @@ public class Main {
         System.out.println("Hello world!");
         prevTxnHash = hashingService.hashData(String.valueOf(Math.random()));
         try {
+            /**
+             * creating users
+             */
             User user1 = new User(100);
-            Thread.sleep(((int)(Math.random() * 5) + 1)*1000);
+            /**
+             * timegap to uniquely identify them as timestamps are used directly as user ids
+             */
+            Thread.sleep(((int)(Math.random() * 2) + 1)*1000);
             User user2 = new User(0);
-            Thread.sleep(((int)(Math.random() * 5) + 1)*1000);
+            Thread.sleep(((int)(Math.random() * 2) + 1)*1000);
             User user3 = new User(0);
-            Thread.sleep(((int)(Math.random() * 5) + 1)*1000);
+            Thread.sleep(((int)(Math.random() * 2) + 1)*1000);
             User user4 = new User(0);
-            Thread.sleep(((int)(Math.random() * 5) + 1)*1000);
+            Thread.sleep(((int)(Math.random() * 2) + 1)*1000);
             User user5 = new User(0);
-            Thread.sleep(((int)(Math.random() * 5) + 1)*1000);
+            Thread.sleep(((int)(Math.random() * 2) + 1)*1000);
             User user6 = new User(0);
 
+            /**
+             * creating a list of users as users are randomly picked by their indices later
+             */
             List<User> users = new ArrayList<>();
             users.add(user1);
             users.add(user2);
@@ -49,22 +58,23 @@ public class Main {
             int rand2 = 0;
             List<Transaction> transactions = new ArrayList<>();
 
-            //testing
-//            System.out.println(user1.toString());
-//            byte[] signedDataTest = user1.signData(prevTxnHash);
-//            boolean isVerified = digitalSignatureService.verifySignedPrevTxnHash(signedDataTest, user1.getPublicKey(), prevTxnHash);
-//            System.out.println("verified "+isVerified);
-//            return;
-
             while(transactions.size()<13) {
+                /**
+                 *randomly picking up users
+                 */
                 rand1 = (int)(Math.random() * range) + min;
                 rand2 = (int)(Math.random() * range) + min;
+
                 if(rand1 == rand2) continue;
 
                 User sender = users.get(rand1);
                 User receiver = users.get(rand2);
+                /**
+                 * signing prev transaction hash
+                 */
                 byte[] signedData = null;
                 try {
+                    //sender signing the hash
                     signedData = sender.signData(prevTxnHash);
                 } catch (Exception e) {
                     System.out.println(e.getMessage());
@@ -72,11 +82,17 @@ public class Main {
                 }
                 int randomTxnAmount = (int)(Math.random() * 99) + 1;
 
+                /**
+                 * just for logging purposes
+                 */
                 String initialState = sender.getId() +" " +
                         sender.getBalance() +" " +
                         randomTxnAmount + " " +
                         receiver.getId() + " " +
                         receiver.getBalance();
+                /**
+                 * request to create transaction
+                 */
                 Transaction transaction = createTransactionService.createTransaction(prevTxnHash, sender, signedData,
                         randomTxnAmount, receiver);
                 if(transaction != null) {
@@ -93,6 +109,9 @@ public class Main {
                     );
                     System.out.println(" ");
                     transactions.add(transaction);
+                    /**
+                     * updating prevTxnHash with latest txn hash
+                     */
                     prevTxnHash = transaction.getTxnHash();
                 }
             }

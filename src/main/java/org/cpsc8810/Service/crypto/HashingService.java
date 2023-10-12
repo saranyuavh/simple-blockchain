@@ -6,6 +6,9 @@ import java.security.NoSuchAlgorithmException;
 
 public class HashingService {
 
+    /*
+    * hashes provided data using SHA3 algorithm in 256 bits
+    * */
     public String hashData(String data) throws NoSuchAlgorithmException {
         final MessageDigest digest = MessageDigest.getInstance("SHA3-256");
         final byte[] hashbytes = digest.digest(
@@ -14,6 +17,11 @@ public class HashingService {
         return sha3Hex;
     }
 
+    /**
+     * converts a given byte data into string
+     * @param hash
+     * @return
+     */
     private static String bytesToHex(byte[] hash) {
         StringBuilder hexString = new StringBuilder(2 * hash.length);
         for (int i = 0; i < hash.length; i++) {
