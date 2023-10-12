@@ -1,19 +1,15 @@
 package org.cpsc8810.Model;
 
-import java.security.PublicKey;
-
 public class Transaction {
 
     private Long txnId;
-    private String prevTxnHash;
     private User receiver;
     private User sender;
-    private String signedPrevTxn;
+    private byte[] signedPrevTxn;
     private Integer amount;
-
-    public Transaction(String prevTxnHash, User sender, String signedPrevTxn, Integer amount, User receiver) {
+    private String txnHash;
+    public Transaction( User sender, byte[] signedPrevTxn, Integer amount, User receiver) {
         this.txnId = System.currentTimeMillis();
-        this.prevTxnHash = prevTxnHash;
         this.sender = sender;
         this.receiver = receiver;
         this.signedPrevTxn = signedPrevTxn;
@@ -26,14 +22,6 @@ public class Transaction {
 
     public void setTxnId(Long txnId) {
         this.txnId = txnId;
-    }
-
-    public String getPrevTxnHash() {
-        return prevTxnHash;
-    }
-
-    public void setPrevTxnHash(String prevTxnHash) {
-        this.prevTxnHash = prevTxnHash;
     }
 
     public User getReceiver() {
@@ -52,11 +40,11 @@ public class Transaction {
         this.sender = sender;
     }
 
-    public String getSignedPrevTxn() {
+    public byte[] getSignedPrevTxn() {
         return signedPrevTxn;
     }
 
-    public void setSignedPrevTxn(String signedPrevTxn) {
+    public void setSignedPrevTxn(byte[] signedPrevTxn) {
         this.signedPrevTxn = signedPrevTxn;
     }
 
@@ -68,11 +56,18 @@ public class Transaction {
         this.amount = amount;
     }
 
+    public String getTxnHash() {
+        return txnHash;
+    }
+
+    public void setTxnHash(String txnHash) {
+        this.txnHash = txnHash;
+    }
+
     @Override
     public String toString() {
         return "Transaction{" +
                 "txnId=" + txnId +
-                ", prevTxnHash='" + prevTxnHash + '\'' +
                 ", receiver=" + receiver +
                 ", sender=" + sender +
                 ", signedPrevTxn='" + signedPrevTxn + '\'' +

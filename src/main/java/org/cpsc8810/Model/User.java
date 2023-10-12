@@ -1,5 +1,7 @@
 package org.cpsc8810.Model;
 
+import org.cpsc8810.Service.crypto.DigitalSignatureService;
+
 import java.security.*;
 import java.util.UUID;
 
@@ -8,6 +10,8 @@ public class User {
     private PublicKey publicKey;
     private PrivateKey privateKey;
     private int balance;
+
+    private DigitalSignatureService digitalSignatureService = new DigitalSignatureService();
 
     public User(int balance) throws NoSuchAlgorithmException {
         this.id = System.currentTimeMillis();
@@ -28,10 +32,6 @@ public class User {
         return publicKey;
     }
 
-    private PrivateKey getPrivateKey() {
-        return privateKey;
-    }
-
     public int getBalance() {
         return balance;
     }
@@ -40,6 +40,9 @@ public class User {
         this.balance = balance;
     }
 
+    public byte[] signData(String prevTxnHash) throws NoSuchAlgorithmException, SignatureException, InvalidKeyException {
+        return digitalSignatureService.signData(prevTxnHash, this.privateKey);
+    }
     @Override
     public String toString() {
         return "User{" +
